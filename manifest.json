@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Incident Extractor",
+  "version": "2.0",
+  "description": "Extract incident number and text from Sentinel",
+  "permissions": ["scripting", "tabs", "activeTab"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/white.png",
+      "48": "icons/white.png",
+      "128": "icons/white.png"
+    }
+  }
+}

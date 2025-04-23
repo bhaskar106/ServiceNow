@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Incident Extractor</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <header class="top-bar">
+    <div class="logo-container">
+      <img id="themeIcon" src="icons/black.png" alt="logo" />
+      <span class="title">Service Now</span>
+    </div>
+    <div class="actions">
+      <button id="themeToggle" title="Toggle Theme">🌓</button>
+      <button id="filterBtn" title="Filter">🔍</button>
+      <button id="refreshBtn" title="Refresh">🔄</button>
+    </div>
+  </header>
+
+  <main>
+    <h1 id="desc">Incident Details</h1>
+    <h2 id="incidentNumber">Loading...</h2>
+    <div id="incidentText"></div>
+    <div id="miscSection"></div>
+  </main>
+
+  <aside id="filterContainer">
+    <strong>Filter by Keys:</strong>
+    <div id="filterCategories"></div>
+  </aside>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
