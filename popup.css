@@ -1,0 +1,170 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    min-width: 500px;
+    max-width: 1000px;
+    background-color: white;
+    color: black;
+    transition: all 0.3s ease;
+}
+
+body.dark {
+    background-color: #000;
+    color: white;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-container img {
+    width: 30px;
+    height: 30px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#filterContainer {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 10px;
+    width: 320px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: white;
+    color: black;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 10px;
+    z-index: 1000;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+body.dark #filterContainer {
+    background: #111;
+    color: white;
+    border-color: #444;
+}
+
+.category-group {
+    margin-bottom: 14px;
+    border-bottom: 1px solid #ddd;
+}
+
+.category-header {
+    font-weight: bold;
+    margin-bottom: 6px;
+    margin-top: 10px;
+    padding-bottom: 2px;
+}
+
+.category-keys label {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    font-weight: normal;
+}
+
+.category-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    margin-top: 16px;
+}
+
+
+#incidentText,
+#miscSection {
+    margin-top: 20px;
+}
+
+.data-row {
+    display: flex;
+    padding: 4px 0;
+    align-items: center;
+}
+
+.data-row .key {
+    flex: 0 0 45%;
+    text-align: left;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.data-row .value {
+    flex: 1;
+    text-align: left;
+    word-break: break-word;
+}
+
+.group-wrapper {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+body.dark .group-wrapper {
+    border-color: #444;
+}
+
+a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+body.dark a {
+    color: #4da3ff;
+}
+
+#filterContainer {
+    transition: opacity 0.3s ease;
+}
+
+body.dark #filterContainer {
+    transition: opacity 0.3s ease;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Optional borders (uncomment if needed) */
+
+/* .data-row {
+  border-bottom: 1px solid #ccc;
+} */
