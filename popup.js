@@ -10,12 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterCategories = document.getElementById('filterCategories');
   const miscSection = document.getElementById('miscSection');
 
-  // const categories = {
-  //   "Network & Host Info": ["host", "host_ip", "host_nc", "noc_nat_ip", "originating_event_host", "last_boot"],
-  //   "URLs & External Links": ["host_page_url", "recent_events_url"],
-  //   "Timestamps & Events": ["event_time", "raw_event_extracted", "etype", "priority"],
-  // };
-
   const categories = {
     "Network & Host Info": [
       "host", "host_ip", "host_nc", "noc_nat_ip", "ifindex", "interface_caption",
@@ -56,106 +50,106 @@ document.addEventListener('DOMContentLoaded', () => {
     return result;
   };
 
-function renderFilters(data) {
-  filterCategories.innerHTML = '';
+  function renderFilters(data) {
+    filterCategories.innerHTML = '';
 
-  for (const [category, fields] of Object.entries(data)) {
-    const group = document.createElement('div');
-    group.className = 'category-group';
+    for (const [category, fields] of Object.entries(data)) {
+      const group = document.createElement('div');
+      group.className = 'category-group';
 
-    const header = document.createElement('div');
-    header.className = 'category-header';
+      const header = document.createElement('div');
+      header.className = 'category-header';
 
-    const groupCheckbox = document.createElement('input');
-    groupCheckbox.type = 'checkbox';
-    groupCheckbox.id = `group-${category}`;
+      const groupCheckbox = document.createElement('input');
+      groupCheckbox.type = 'checkbox';
+      groupCheckbox.id = `group-${category}`;
 
-    groupCheckbox.checked = Object.keys(fields).every(k => selectedKeys.has(k));
+      groupCheckbox.checked = Object.keys(fields).every(k => selectedKeys.has(k));
 
-    groupCheckbox.addEventListener('change', () => {
-      for (const key in fields) {
-        const cb = document.getElementById(`chk-${key}`);
-        cb.checked = groupCheckbox.checked;
+      groupCheckbox.addEventListener('change', () => {
+        for (const key in fields) {
+          const cb = document.getElementById(`chk-${key}`);
+          cb.checked = groupCheckbox.checked;
 
-        if (groupCheckbox.checked) {
-          selectedKeys.add(key);
-        } else {
-          selectedKeys.delete(key);
+          if (groupCheckbox.checked) {
+            selectedKeys.add(key);
+          } else {
+            selectedKeys.delete(key);
+          }
         }
-      }
-      displayFilteredData();
-    });
-
-    header.appendChild(groupCheckbox);
-    header.appendChild(document.createTextNode(category));
-    group.appendChild(header);
-
-    const keyList = document.createElement('div');
-    keyList.className = 'category-keys';
-
-    for (const key in fields) {
-      const label = document.createElement('label');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = selectedKeys.has(key);
-      checkbox.id = `chk-${key}`;
-
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          selectedKeys.add(key);
-        } else {
-          selectedKeys.delete(key);
-        }
-
-        const allInGroup = Object.keys(fields);
-        const allSelected = allInGroup.every(k => selectedKeys.has(k));
-        const noneSelected = allInGroup.every(k => !selectedKeys.has(k));
-
-        const groupCb = document.getElementById(`group-${category}`);
-        groupCb.checked = allSelected;
-        if (!allSelected && !noneSelected) {
-          groupCb.indeterminate = true;
-        } else {
-          groupCb.indeterminate = false;
-        }
-
         displayFilteredData();
       });
 
-      label.appendChild(checkbox);
-      label.appendChild(document.createTextNode(key));
-      keyList.appendChild(label);
+      header.appendChild(groupCheckbox);
+      header.appendChild(document.createTextNode(category));
+      group.appendChild(header);
+
+      const keyList = document.createElement('div');
+      keyList.className = 'category-keys';
+
+      for (const key in fields) {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = selectedKeys.has(key);
+        checkbox.id = `chk-${key}`;
+
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            selectedKeys.add(key);
+          } else {
+            selectedKeys.delete(key);
+          }
+
+          const allInGroup = Object.keys(fields);
+          const allSelected = allInGroup.every(k => selectedKeys.has(k));
+          const noneSelected = allInGroup.every(k => !selectedKeys.has(k));
+
+          const groupCb = document.getElementById(`group-${category}`);
+          groupCb.checked = allSelected;
+          if (!allSelected && !noneSelected) {
+            groupCb.indeterminate = true;
+          } else {
+            groupCb.indeterminate = false;
+          }
+
+          displayFilteredData();
+        });
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(key));
+        keyList.appendChild(label);
+      }
+
+      group.appendChild(keyList);
+      filterCategories.appendChild(group);
+    }
+  }
+
+  function createDataRow(key, val) {
+    const row = document.createElement('div');
+    row.className = 'data-row';
+
+    const keyDiv = document.createElement('div');
+    keyDiv.className = 'key';
+    keyDiv.textContent = `${key}:`;
+
+    const valDiv = document.createElement('div');
+    valDiv.className = 'value';
+
+    if (/url/i.test(key) || /^https?:\/\//i.test(val)) {
+      const link = document.createElement('a');
+      link.href = val;
+      link.textContent = key;
+      link.target = '_blank';
+      valDiv.appendChild(link);
+    } else {
+      valDiv.textContent = val;
     }
 
-    group.appendChild(keyList);
-    filterCategories.appendChild(group);
+    row.append(keyDiv, valDiv);
+    return row;
   }
-}
-
- function createDataRow(key, val) {
-  const row = document.createElement('div');
-  row.className = 'data-row';
-
-  const keyDiv = document.createElement('div');
-  keyDiv.className = 'key';
-  keyDiv.textContent = `${key}:`;
-
-  const valDiv = document.createElement('div');
-  valDiv.className = 'value';
-
-  if (/url/i.test(key) || /^https?:\/\//i.test(val)) {
-    const link = document.createElement('a');
-    link.href = val;
-    link.textContent = key;
-    link.target = '_blank';
-    valDiv.appendChild(link);
-  } else {
-    valDiv.textContent = val;
-  }
-
-  row.append(keyDiv, valDiv);
-  return row;
-}
 
   const renderData = () => {
     incidentText.innerHTML = '';
@@ -163,10 +157,10 @@ function renderFilters(data) {
       if (cat === "Miscellaneous / Other") continue;
       const entries = Object.entries(fields).filter(([k]) => selectedKeys.has(k));
       if (!entries.length) continue;
-       const groupWrapper = document.createElement('div');
+      const groupWrapper = document.createElement('div');
       groupWrapper.style.marginTop = '20px';
       groupWrapper.style.paddingBottom = '10px';
-      groupWrapper.style.borderBottom = '1px solid #ccc'; 
+      groupWrapper.style.borderBottom = '1px solid #ccc';
 
       const groupTitle = document.createElement('div');
       groupTitle.innerHTML = `<strong>${cat}</strong>`;
@@ -176,9 +170,9 @@ function renderFilters(data) {
       groupWrapper.appendChild(groupTitle);
 
       for (const [key, val] of filteredEntries) {
-    const row = createDataRow(key, val);
-    groupWrapper.appendChild(row);
-  }
+        const row = createDataRow(key, val);
+        groupWrapper.appendChild(row);
+      }
 
       incidentText.appendChild(groupWrapper);
       entries.forEach(([k, v]) => renderRow(k, v, incidentText));
@@ -215,52 +209,52 @@ function renderFilters(data) {
   };
 
   function displayFilteredData() {
-  incidentText.innerHTML = '';
-  if (!parsedData || Object.keys(parsedData).length === 0) return;
+    incidentText.innerHTML = '';
+    if (!parsedData || Object.keys(parsedData).length === 0) return;
 
-  for (const [category, entries] of Object.entries(parsedData)) {
-    const filteredEntries = Object.entries(entries).filter(([key]) => selectedKeys.has(key));
-    if (filteredEntries.length === 0) continue;
+    for (const [category, entries] of Object.entries(parsedData)) {
+      const filteredEntries = Object.entries(entries).filter(([key]) => selectedKeys.has(key));
+      if (filteredEntries.length === 0) continue;
 
-    const groupWrapper = document.createElement('div');
-    groupWrapper.className = 'group-wrapper'; // Use this class in CSS
+      const groupWrapper = document.createElement('div');
+      groupWrapper.className = 'group-wrapper'; // Use this class in CSS
 
-    const groupTitle = document.createElement('div');
-    groupTitle.className = 'category-title';
-    groupTitle.textContent = category;
-    groupWrapper.appendChild(groupTitle);
+      const groupTitle = document.createElement('div');
+      groupTitle.className = 'category-title';
+      groupTitle.textContent = category;
+      groupWrapper.appendChild(groupTitle);
 
-    for (const [key, val] of filteredEntries) {
-      groupWrapper.appendChild(createDataRow(key, val));
+      for (const [key, val] of filteredEntries) {
+        groupWrapper.appendChild(createDataRow(key, val));
+      }
+
+      incidentText.appendChild(groupWrapper);
     }
-
-    incidentText.appendChild(groupWrapper);
   }
-}
 
   function displayIncident(description) {
-  const lines = description.split('\n').filter(Boolean);
-  const dict = {};
+    const lines = description.split('\n').filter(Boolean);
+    const dict = {};
 
-  for (let i = 1; i < lines.length; i++) {
-    const [key, ...rest] = lines[i].split(':');
-    if (key && rest.length) {
-      dict[key.trim()] = rest.join(':').trim();
+    for (let i = 1; i < lines.length; i++) {
+      const [key, ...rest] = lines[i].split(':');
+      if (key && rest.length) {
+        dict[key.trim()] = rest.join(':').trim();
+      }
     }
-  }
 
     parsedData = organizeCategories(dict);
-    
-  selectedKeys = new Set();
-  for (const category in parsedData) {
-    for (const key in parsedData[category]) {
-      selectedKeys.add(key);
-    }
-  }
 
-  renderFilters(parsedData);
-  displayFilteredData();
-}
+    selectedKeys = new Set();
+    for (const category in parsedData) {
+      for (const key in parsedData[category]) {
+        selectedKeys.add(key);
+      }
+    }
+
+    renderFilters(parsedData);
+    displayFilteredData();
+  }
 
   function fetchIncident() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
