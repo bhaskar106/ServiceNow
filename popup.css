@@ -36,6 +36,10 @@ body.dark {
     font-size: 18px;
 }
 
+.incidentHeader {
+    display: flex;
+}
+
 .actions button {
     background: none;
     border: none;
