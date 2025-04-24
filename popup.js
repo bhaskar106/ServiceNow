@@ -233,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function displayIncident(description) {
+    // incidentText.textContent = description;
+    // return null;
     const lines = description.split('\n').filter(Boolean);
     const dict = {};
 
@@ -263,40 +265,53 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.scripting.executeScript({
         target: { tabId: tabId },
         func: () => {
-          function findData(root, active = { found: false, label: '' }) {
+          function findInc(root, active = { found: false, label: '' }) {
             const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
             while (walker.nextNode()) {
               const el = walker.currentNode;
+
               if (
                 !active.found &&
-                el.tagName === 'A' &&
-                el.getAttribute('aria-selected') === 'true' &&
-                el.hasAttribute('aria-label') &&
-                el.getAttribute('aria-label').startsWith('INC')
+                el.tagName === 'DIV' &&
+                el.classList.contains('chrome-tab-panel') &&
+                el.classList.contains('is-active')
               ) {
                 active.found = true;
-                active.label = el.getAttribute('aria-label');
-              }
-
-              if (active.found && el.classList?.contains('now-textarea-field-copy')) {
+                console.log('Active Tab Found:', active.found);
+                continue;
+              } else if (
+                el.classList.contains('now-input-native') &&
+                el.getAttribute('name') === 'number' &&
+                el.getAttribute('value')?.startsWith('INC')
+              ) {
+                active.label = el.getAttribute('value');
+                console.log('Active INC Found:', active.label);
+                continue;
+              } else if (
+                active.found &&
+                el.classList.contains('now-textarea-field-copy') &&
+                el.hasAttribute('data-replicated-value')
+              ) {
+                console.log('Active INC Desc Found:', el.getAttribute('data-replicated-value'));
                 return {
-                  incident: active.label,
-                  description: el.getAttribute('data-replicated-value')
+                    incident: active.label,
+                    description: el.getAttribute('data-replicated-value')
                 };
               }
 
               if (el.shadowRoot) {
-                const result = findData(el.shadowRoot, active);
+                const result = findInc(el.shadowRoot, active);
                 if (result) return result;
               }
             }
             return null;
           }
 
-          return findData(document, { found: false, label: '' }) || { incident: 'Unknown', description: '' };
+          return findInc(document) || { incident: 'Unknown', description: '' };
         }
       }, (results) => {
         const result = results?.[0]?.result;
+        console.log('Result:', result);
         if (result) {
           incidentNumber.textContent = result.incident;
           displayIncident(result.description);
@@ -306,6 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
 
   refreshBtn.addEventListener('click', () => {
     desc.textContent = 'Page refreshed!';
