@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const setTheme = (theme) => {
         body.classList.toggle('dark', theme === 'dark');
-        themeIcon.src = theme === 'dark' ? 'icons/black.png' : 'icons/white.png';
+        // themeIcon.src = theme === 'dark' ? 'icons/black.png' : 'icons/white.png';
         localStorage.setItem('theme', theme);
     };
 
