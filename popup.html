@@ -2,43 +2,43 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>ServiceNow Helper</title>
-  <link rel="stylesheet" href="popup.css">
+    <meta charset="UTF-8">
+    <title>Sentinel</title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body>
-  <header class="top-bar">
-    <div class="logo-container">
-      <img id="themeIcon" src="icons/black.png" alt="logo" />
-      <span class="title">Sentinel</span>
-    </div>
-    <div class="actions">
-      <button id="themeToggle" title="Toggle Theme">🌓</button>
-      <button id="filterBtn" title="Filter">🔍</button>
-      <button id="refreshBtn" title="Refresh">🔄</button>
-    </div>
-  </header>
-  <br>
+<body class="dark">
+    <header class="top-bar">
+        <div class="logo-container">
+            <img id="themeIcon" src="sentinel.png" alt="logo" />
+            <span class="title">Sentinel Technologies</span>
+        </div>
+        <div class="actions">
+            <button id="themeToggle" title="Toggle Theme"><i class="fas fa-adjust"></i></button>
+            <button id="filterBtn" title="Filter"><i class="fas fa-filter"></i></button>
+            <button id="refreshBtn" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+        </div>
+    </header>
+    <br>
 
-  <main>
-    <div class="incidentHeader">
-      <h2 id="desc">Incident Details:&nbsp;&nbsp;</h2>
-      <h2 id="incidentNumber">Loading...</h2>
-    </div>
-    <div id="incidentText"></div>
-     <!-- <div>
-      <h3 id="incidentText"></h3>
-     </div> -->
-    <div id="miscSection"></div>
-  </main>
+    <main>
+        <div class="incidentHeader">
+            <h2 id="desc">Incident Details:&nbsp;&nbsp;</h2>
+            <h2 id="incidentNumber">Loading...</h2>
+        </div>
+        <div id="incidentText"></div>
+        <div id="miscSection"></div>
+    </main>
 
-  <aside id="filterContainer">
-    <strong>Filter by Keys:</strong>
-    <div id="filterCategories"></div>
-  </aside>
+    <aside id="filterContainer">
+        <strong>Filter by Keys:</strong>
+        <div id="filterCategories"></div>
+    </aside>
 
-  <script src="popup.js"></script>
+    <script src="popup.js"></script>
 </body>
 
 </html>
